@@ -93,6 +93,7 @@ yarn add cookie-parser
 Aggiungiamo nel codice il pacchetto **cookie-parser** per gestire i cookie nelle richieste e nelle risposte.
 
 ```js
+...
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); // Da aggiungere
@@ -103,6 +104,7 @@ const cookieParser = require('cookie-parser'); // Da aggiungere
 Configuriamo il middleware per **cookie-parser** subito dopo `body-parser` in modo che il server possa gestire i cookie. Questo middleware ci permette di leggere e scrivere cookie facilmente.
 
 ```js
+...
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser()); //Da aggiungere
 ```
@@ -133,7 +135,7 @@ app.get('/', (req, res) => {
 
 ### 4. Impostazione del cookie nella route POST (`/greet`)
 
-Dopo che l'utente invia il form, oltre a renderizzare la pagina di saluto, viene impostato un cookie con il nome dell'utente. Il cookie ha una durata di 24 ore (24*60*60*1000 millisecondi), che impostiamo tramite l'opzione `maxAge`. Questo cookie verrà poi usato nella route GET per ricordare l'utente durante le visite successive.
+Dopo che l'utente invia il form, oltre a renderizzare la pagina di saluto, viene impostato un cookie con il nome dell'utente. Il cookie ha una durata di 24 ore (24 * 60 * 60 * 1000 millisecondi), che impostiamo tramite l'opzione `maxAge`. Questo cookie verrà poi usato nella route GET per ricordare l'utente durante le visite successive.
 
 Modifichiamo quindi la route greet dalla vecchia versione
 ```js
@@ -182,9 +184,95 @@ Queste modifiche ti permettono di memorizzare il nome dell'utente tramite cookie
 
 - La parte frontend ha subito modifiche solo nell'interfaccia del messaggio di saluto: può essere di benvenuto o di bentornato.
 
-### Test e screenshot del risultato
-TBW
+### Avvio della nuova versione del server.
+Da Terminale, interrompere con Ctrl-C la precedente esecuzione ed avviare la versione aggiornata:
+```bash
+node backend/app.js
+```
 
-TBW: aggiungere un pulsante nella pagina di greeting che permette di eliminare i cookie.
+Aprire la finestra PORTS, copiare e incollare l'indirizzo web nel Simple Browser o su un Web Browser.
+<img src="_doc_/ports.png" alt="sb" width="70%"/>
+
+- Testare l'applicazione inserendo il proprio nome.
+- Ricaricare la pagina principale per testare la nuova pagina di bentornato.
+
+### Esercizio: Aggiungere la funzione di logout
+Sapendo che le seguenti istruzioni, rispettivamente, permettono di
+- Cancellare il cookie chiamato "name"
+- Reindirizzare ad una pagina web
+```js
+res.clearCookie('name'); // Cancella il cookie chiamato "name"
+res.redirect('/'); // Reindirizza alla home page
+```
+
+Aggiungere nella pagina del saluto un pulsante Logout che cancella il cookie "name".
+
+<details style="border: 1px solid #007bff; border-radius: 5px; padding: 10px; background-color: #f0f0f0;">
+  <summary>Svolgere autonomamente l'esercizio. Apri qui per leggere dei suggerimenti</summary>
+  
+  Suggerimento:
+
+  - modificare la view greet.ejs in cui aggiungere il pulsante di logout
+
+  - il pulsante di logout punta alla route POST "/logout"
+
+  - modificare il backend "app.js" per aggiungere la route POST "/logout", in cui cancellare il cookie.
+
+</details>
+
+<details style="border: 1px solid #007bff; border-radius: 5px; padding: 10px; background-color: #f0f0f0;">
+  <summary>Solo dopo aver svolto l'esercizio, apri qui per vedere la soluzione</summary>
+
+#### Modifica il file `views/greet.ejs`
+
+Nel template `greet.ejs`, aggiungi un form con un pulsante per eliminare il cookie. Questo form invierà una richiesta POST alla route `/logout`, che creeremo più avanti.
+
+Modifica il contenuto di `greet.ejs`, aggiungendo il pulsante Logout.
+
+```html
+<body>
+    ...
+    <!-- Form per eliminare il cookie -->
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+```
+Nel template `greet.ejs`, è stato aggiunto un semplice form con il pulsante "Logout" che invia una richiesta POST alla route `/logout`. Quando l'utente preme questo pulsante, il cookie verrà eliminato e l'utente viene reindirizzato alla homepage.
+
+#### Aggiungi una nuova route per eliminare i cookie
+
+Nel file `app.js`, aggiungere una nuova route per gestire l'eliminazione del cookie quando viene premuto il pulsante Logout. Questa route cancellerà il cookie e reindirizzerà l'utente alla pagina principale (`/`).
+
+```js
+app.post('/logout', (req, res) => {
+    res.clearCookie('name'); // Cancella il cookie chiamato "name"
+    res.redirect('/'); // Reindirizza alla home page
+});
+```
+La nuova route `POST /logout` cancella il cookie con `res.clearCookie('name')` e reindirizza l'utente alla pagina principale (`/`). Questo farà sì che il nome venga dimenticato e l'utente vedrà nuovamente il form alla prossima visita.
+
+
+</details>
+
+#### Avvio e Test della nuova versione del server.
+Da Terminale, interrompere con Ctrl-C la precedente esecuzione ed avviare la versione aggiornata:
+```bash
+node backend/app.js
+```
+
+Aprire la finestra PORTS, copiare e incollare l'indirizzo web nel Simple Browser o su un Web Browser.
+<img src="_doc_/ports.png" alt="sb" width="70%"/>
+
+- Testare l'applicazione inserendo il proprio nome.
+- Ricaricare la pagina principale per testare la nuova pagina di bentornato.
+- Testare il pulsante di Logout e conseguente cancellazione del cookie.
+
+
+### Approfondimento: come eliminare tutti i cookie
+Per eliminare tutti i cookie, si può usare l'istruzione
+```js
+Object.keys(req.cookies).forEach(cookie => res.clearCookie(cookie));
+```
 
 
