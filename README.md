@@ -181,3 +181,10 @@ La variabile è quella passata dalla funzione render, sul template 'greet'.
 Queste modifiche ti permettono di memorizzare il nome dell'utente tramite cookie e di utilizzarlo per personalizzare l'esperienza dell'utente nelle visite successive, senza bisogno di sessioni.
 
 - La parte frontend ha subito modifiche solo nell'interfaccia del messaggio di saluto: può essere di benvenuto o di bentornato.
+
+### Test e screenshot del risultato
+TBW
+
+TBW: aggiungere un pulsante nella pagina di greeting che permette di eliminare i cookie.
+
+
