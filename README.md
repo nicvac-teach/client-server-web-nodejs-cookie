@@ -119,13 +119,14 @@ app.get('/', (req, res) => {
 ```
  
  Ora, controlliamo se esiste un cookie con il nome dell'utente. Se il cookie esiste, il server reindirizza direttamente alla pagina di saluto senza chiedere nuovamente il nome. Se il cookie non esiste, il server continua a mostrare il form come prima.
+ Nel caso in cui si mostri la pagina del saluto, visualizziamo "Bentornato". 
 
 ```js
 app.get('/', (req, res) => {
     const name = req.cookies.name; // Legge il cookie "name"
     if (name) {
         // Se il cookie esiste, mostra la pagina di saluto
-        res.render('greet', { name: name });
+        res.render('greet', { message:'Bentornato', name: name });
     } else {
         // Se non esiste, mostra il form
         res.render('form');
@@ -141,7 +142,7 @@ Modifichiamo quindi la route greet dalla vecchia versione
 ```js
 app.post('/greet', (req, res) => {
     const name = req.body.name;
-    res.render('greet', { message:'Bentornato', name: name });
+    res.render('greet', { name: name });
 });
 ```
 Alla nuova:
@@ -153,6 +154,7 @@ app.post('/greet', (req, res) => {
     res.render('greet', { message:'Benvenuto', name: name });
 });
 ```
+A differenza della vecchia versione, abbiamo aggiunto il parametro del messaggio per visualizzare "Benvenuto" al primo accesso.
 
 ### 5. Modifichiamo il frontend per aggiungere il messaggio di bentornato
 Il template ejs del messaggio all'utente si presenta come
@@ -264,9 +266,13 @@ node backend/app.js
 Aprire la finestra PORTS, copiare e incollare l'indirizzo web nel Simple Browser o su un Web Browser.
 <img src="_doc_/ports.png" alt="sb" width="70%"/>
 
-- Testare l'applicazione inserendo il proprio nome.
-- Ricaricare la pagina principale per testare la nuova pagina di bentornato.
-- Testare il pulsante di Logout e conseguente cancellazione del cookie.
+- Testare l'applicazione compilando il form (inserendo il proprio nome).
+- Osservare il messaggio **Benvenuto**, seguito dal nome
+- Riaprire l'indirizzo web nello stesso Simple Browser o Web Browser.
+- Osservare il messaggio **Bentornato**, seguito dal nome
+- Premere il pulsante di Logout (che cancellerà il cookie)
+- Controllare che venga mostrato il form iniziale
+- Da questo punto in poi riprende tutto il processo.
 
 
 ### Approfondimento: come eliminare tutti i cookie
