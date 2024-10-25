@@ -195,8 +195,25 @@ node backend/app.js
 Aprire la finestra PORTS, copiare e incollare l'indirizzo web nel Simple Browser o su un Web Browser.
 <img src="_doc_/ports.png" alt="sb" width="70%"/>
 
-- Testare l'applicazione inserendo il proprio nome.
-- Ricaricare la pagina principale per testare la nuova pagina di bentornato.
+- Testare l'applicazione compilando il form (inserendo il proprio nome).
+
+<img src="_doc_/01form.png" alt="sb" width="30%"/>
+
+- Osservare il messaggio Benvenuto, seguito dal nome
+
+<img src="_doc_/02Benvenuto.png" alt="sb" width="15%"/>
+
+- Riaprire l'indirizzo web nello stesso Simple Browser o Web Browser.
+
+
+- Osservare il messaggio Bentornato, seguito dal nome
+
+<img src="_doc_/03Bentornato.png" alt="sb" width="15%"/>
+
+- Ispezionare i cookie creati nel browser. Ad esempio da Chrome, mentre visualizzi la nostra web app, premere F12. I cookie creati sono visibili e ispezionabili, come nella figura seguente:
+
+<img src="_doc_/cookies.png" alt="sb" width="30%"/>
+
 
 ### Esercizio: Aggiungere la funzione di logout
 Sapendo che le seguenti istruzioni, rispettivamente, permettono di
